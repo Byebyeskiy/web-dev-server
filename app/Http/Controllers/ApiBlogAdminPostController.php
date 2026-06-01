@@ -1,27 +1,17 @@
 <?php
 
-namespace App\Http\Controllers\Api\Blog;
+namespace App\Http\Controllers;
 
-use App\Models\BlogPost;
 use Illuminate\Http\Request;
-use App\Repositories\BlogPostRepository;
 
-class PostController extends BaseController
+class ApiBlogAdminPostController extends Controller
 {
-    public function __construct(private BlogPostRepository $blogPostRepository)
-    {
-        //parent::__construct();
-    }
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $items = BlogPost::all();
-        return $items;
-        $paginator = $this->blogPostRepository->getAllWithPaginate();
-
-        return $paginator;
+        //
     }
 
     /**
