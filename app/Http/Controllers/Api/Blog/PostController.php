@@ -8,11 +8,16 @@ use App\Repositories\BlogPostRepository;
 use App\Repositories\BlogCategoryRepository;
 use App\Http\Requests\BlogPostUpdateRequest;
 use App\Http\Requests\BlogPostCreateRequest;
+use App\Jobs\BlogPostAfterCreateJob;
+use App\Jobs\BlogPostAfterDeleteJob;
 
 use Illuminate\Support\Str;
+use Illuminate\Foundation\Bus\DispatchesJobs;
 
 class PostController extends BaseController
 {
+    use DispatchesJobs;
+
     public function __construct(private BlogPostRepository $blogPostRepository )
     {
         //parent::__construct();
@@ -41,6 +46,8 @@ class PostController extends BaseController
         $item = (new BlogPost())->create($data); //створюємо об'єкт і додаємо в БД
 
         if ($item) {
+            $job = new BlogPostAfterCreateJob($item);
+            $this->dispatch($job);
             return ['success' => 'Успішно збережено'];
         } else {
             return ['msg' => 'Помилка збереження'];
@@ -91,6 +98,7 @@ class PostController extends BaseController
         //$result = BlogPost::find($id)->forceDelete(); //повне видалення з БД
 
         if ($result) {
+            BlogPostAfterDeleteJob::dispatch($id)->delay(20);
             return []; //TODO: Написати код респонса
         } else {
             return []; //TODO: Написати код респонса
