@@ -4,12 +4,14 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\SoftDeletes;const UNKNOWN_USER = 1;
 
 class BlogPost extends Model
 {
     use HasFactory;
     use SoftDeletes;
+
+    const UNKNOWN_USER = 1;
     protected $fillable
         = [
             'title',
@@ -19,7 +21,6 @@ class BlogPost extends Model
             'content_raw',
             'is_published',
             'published_at',
-            'user_id',
         ];
 
     /**
