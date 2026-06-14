@@ -23,7 +23,9 @@
                 <td>{{ post.user?.name }}</td>
                 <td>{{ post.category?.title }}</td>
                 <td>
-                  <a :href="'/admin/blog/posts/' + post.id + '/edit'">{{ post.title }}</a>
+                  <a :href="'/BlogPost/' + post.id" class="text-blue-400 hover:underline">
+                    {{ post.title }}
+                  </a>
                 </td>
                 <td>{{ post.published_at }}</td>
               </tr>
