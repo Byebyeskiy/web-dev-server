@@ -56,9 +56,14 @@ class PostController extends BaseController
      */
     public function show(string $id)
     {
-        //
-    }
+        $item = BlogPost::with(['user:id,name', 'category:id,title'])->find($id);
 
+        if (empty($item)) {
+            return response()->json(['message' => "Пост id=[{$id}] не знайдено"], 404);
+        }
+
+        return $item;
+    }
     /**
      * Update the specified resource in storage.
      */
