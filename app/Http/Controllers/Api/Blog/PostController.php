@@ -29,10 +29,7 @@ class PostController extends BaseController
      */
     public function index()
     {
-        $items = BlogPost::all();
-        return $items;
         $paginator = $this->blogPostRepository->getAllWithPaginate();
-
         return $paginator;
     }
 
