@@ -2,36 +2,26 @@
 
 namespace App\Http\Controllers\Api\Blog\Admin;
 
-//use App\Http\Controllers\Controller;
-
-
 use App\Models\BlogCategory;
 use App\Repositories\BlogCategoryRepository;
 use Illuminate\Support\Str;
 use App\Http\Controllers\Api\Blog\BaseController;
 use App\Http\Requests\BlogCategoryUpdateRequest;
 use App\Http\Requests\BlogCategoryCreateRequest;
+use App\Http\Resources\Api\Blog\Admin\CategoryResource;
+
 class CategoryController extends BaseController
 {
     public function __construct(private BlogCategoryRepository $blogCategoryRepository)
     {
-        //parent::__construct();
-
     }
-    /**
-     * Display a listing of the resource.
-     */
+
     public function index()
     {
-        //$paginator = BlogCategory::paginate(5);
         $paginator = $this->blogCategoryRepository->getAllWithPaginate(5);
-        return $paginator;
-        //dd(__METHOD__);
+        return CategoryResource::collection($paginator);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(BlogCategoryCreateRequest $request)
     {
         $data = $request->all();
@@ -49,15 +39,13 @@ class CategoryController extends BaseController
             ];
         }
 
-
-
         $item = BlogCategory::create($data);
 
         if ($item) {
             return [
                 'success' => true,
                 'message' => 'Категорію успішно створено',
-                'data'    => $item,
+                'data'    => new CategoryResource($item),
             ];
         } else {
             return [
@@ -65,35 +53,12 @@ class CategoryController extends BaseController
                 'message' => 'Помилка створення категорії',
             ];
         }
-        $data = $request->input(); //отримаємо масив даних, які надійшли з форми
-        if (empty($data['slug'])) { //якщо псевдонім порожній
-            $data['slug'] = Str::slug($data['title']); //генеруємо псевдонім
-        }
-
-        $item = (new BlogCategory())->create($data); //створюємо об'єкт і додаємо в БД
-
-        if ($item) {
-            return [
-                'success' => true,
-                'message' => 'Успішно збережено'
-            ];
-        } else {
-            return ['message' => 'Помилка збереження'];
-        }
-        //dd(__METHOD__);
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(string $id)
     {
-        //dd(__METHOD__);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(BlogCategoryUpdateRequest $request, $id)
     {
         $item = $this->blogCategoryRepository->getEdit($id);
@@ -102,7 +67,6 @@ class CategoryController extends BaseController
         }
 
         $data = $request->all();
-
         $result = $item->update($data);
 
         if ($result) {
@@ -113,15 +77,9 @@ class CategoryController extends BaseController
         } else {
             return ['message' => 'Помилка збереження'];
         }
-
-        //dd(__METHOD__);
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(string $id)
     {
-        //dd(__METHOD__);
     }
 }

@@ -39,10 +39,10 @@ const total = ref(0)
 
 const columns = [
   { accessorKey: 'id', header: '#' },
-  { accessorKey: 'user', header: 'Автор', cell: ({ row }: any) => row.original.user?.name },
-  { accessorKey: 'category', header: 'Категорія', cell: ({ row }: any) => row.original.category?.title },
+  { accessorKey: 'author_name', header: 'Автор' },
+  { accessorKey: 'category_title', header: 'Категорія' },
   { accessorKey: 'title', header: 'Заголовок' },
-  { accessorKey: 'published_at', header: 'Дата публікації' }
+  { accessorKey: 'date_published', header: 'Дата публікації' }
 ]
 
 const getPosts = async () => {
